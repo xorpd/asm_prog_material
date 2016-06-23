@@ -20,7 +20,7 @@ section '.text' code readable executable
 
 start:
     xor     eax,eax
-    mov     dword [eax],3h  ; Write 3h to location 3h.
+    mov     dword [eax],3h  ; Write 3h to location 0.
                             ; Raises an exception in protected mode.
 
     ; Exit the process:
