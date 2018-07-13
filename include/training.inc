@@ -14,9 +14,10 @@ read_hex:
     ; Keep some room for locals:
     sub     esp,16+4
 
+    push    edx
     push    ebx
     push    ecx
-    push    edx
+    push    edi
     
     lea     edi,[ebp + .read_hex_buffer]
     mov     ecx,.MAX_BYTES_TO_READ
@@ -37,9 +38,10 @@ read_hex:
     add     esp,4*3
 
     ; Result is inside eax.
-    pop     edx
+    pop     edi
     pop     ecx
     pop     ebx
+    pop     edx
 
     add     esp,16+4
     pop     ebp
@@ -120,10 +122,14 @@ print_delimiter:
 ; Print the string pointed by esi to the console.
 ; The string must be null terminated.
 print_str:
+    jmp     .print_str_after_data
+    .safeFormatString db "%s",0
+.print_str_after_data:
     pushad      ; Keep all registers.
     push    esi
+    push    .safeFormatString
     call    [printf]
-    add     esp,4
+    add     esp,8
     popad           ; Restore all registers.
     ret
 
